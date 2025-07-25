@@ -1,0 +1,48 @@
+{% extends "base2.html" %}
+{% block title %}相册{% endblock %}
+{% load static %}
+{% block content %}
+    <div class="row" style="padding: 10px">
+        {% for album in pageData.object_list %}
+            <div class="col-md-2">
+                <i><img style="width: 200px;height: 200px" src="{{ album.photo.url }}"></i>
+                <div style="padding: 3px">
+                    <h5 style="border-bottom: #ccc 1px solid;padding-top: 10px;padding-bottom: 5px">
+                        <strong>{{ album.title }}</strong>
+                    </h5>
+                    <span>{{ album.introduce }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <nav aria-label="...">
+            <ul class="pagination" style="justify-content: center;padding-top: 20px">
+                {% if pageData.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'album' id pageData.previous_page_number %}">上一页</a>
+                    </li>
+                {% endif %}
+                {% if pageData.object_list %}
+                    {% for page in pageData.paginator.page_range %}
+                        {% if pageData.number == page %}
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="{% url 'album' id page %}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="{% url 'album' id page %}">{{ page }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if pageData.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'album' id pageData.next_page_number %}">下一页</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+
+{% endblock %}

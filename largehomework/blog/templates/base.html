@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>{% block title %}博客首页{% endblock %}-Powered by python222</title>
+    <link href="{% static "bootstrap5/css/bootstrap.css" %}" rel="stylesheet"/>
+    <link href="{% static "css/blog.css" %}" rel="stylesheet"/>
+    <script src="{% static "bootstrap5/js/bootstrap.js" %}"></script>
+    <script src="{% static "js/jquery-1.11.2.min.js" %}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img style="width: 326px;height: 60px" alt="python博客系统" src="{% static "images/logo.png" %}">
+        </div>
+        <div class="col-md-8">
+            <iframe style="float: right;" width="400" scrolling="no" height="60" frameborder="0"
+                    allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=12&icon=1&num=5"></iframe>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="padding-top: 10px;padding-bottom: 10px">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{% url 'article' id 1 0 %}">博客首页</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'album' id 1 %}">我的相册</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'about' id %}">关于我</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'message' id 1 %}">留言</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'admin:index' %}">博客后台管理</a>
+                            </li>
+                        </ul>
+                        <form class="d-flex" role="search" method="post" action="{% url 'search' id %}"
+                              onsubmit="return checkSearchForm()">
+                            {% csrf_token %}
+                            <input class="form-control me-2" type="search" placeholder="请输入搜索内容..."
+                                   aria-label="Search" name="v" id="v" value="{{ v }}">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="col-md-3">
+            <div class="data_list">
+                <div class="data_list_title">
+                    <img src="{% static 'images/user_icon.png' %}"/>
+                    关于我
+                </div>
+                <div class="user_image">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}"/>
+                    {% else %}
+                        <img src="{% static 'images/user.jpg' %}"/>
+                    {% endif %}
+                </div>
+                <div class="nickName">{{ user.name }}</div>
+                <div class="userSign">({{ user.introduce }})</div>
+            </div>
+
+            <div class="data_list">
+                <div class="data_list_title">
+                    <img src="{% static 'images/byType_icon.png' %}"/>
+                    按日志类别
+                </div>
+                <div class="datas">
+                    <ul>
+                        {% for type in articleTypeList %}
+                            <li><span><a href="{% url 'article' id 1 type.id %}">{{ type.name }}</a></span></li>
+                        {% endfor %}
+
+
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="data_list">
+                <div class="data_list_title">
+                    <img src="{% static 'images/link_icon.png' %}"/>
+                    友情链接
+                </div>
+                <div class="datas">
+                    <ul>
+                        {% for link in linkList %}
+                            <li><span><a href="{{ link.url }}" target="_blank">{{ link.name }}</a></span></li>
+                        {% endfor %}
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div align="center" style="padding-top: 120px">
+                <span style="float: left;">Powered by <a href="http://python.org"
+                                                         target="_blank">Python</a></span>
+                Copyright © 1997-2025 版权所有
+            </div>
+        </div>
+    </div>
+</div>
+{% block script %}{% endblock %}
+<script>
+    function checkSearchForm() {
+        var v = $("#v").val();
+        if (v == null || v == '') {
+            alert("请输入搜索内容！");
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

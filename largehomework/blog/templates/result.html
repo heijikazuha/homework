@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}搜索结果{% endblock %}
+{% load static %}
+{% block content %}
+    <div class="data_list">
+        <div class="data_list_title">
+            <img src="{% static 'images/search_icon.png' %}"/>
+            搜索'{{ v }}'结果
+        </div>
+        <div class="datas">
+            {% if not pageData.object_list %}
+                <p style="text-align: center;padding-top: 10px">未查询到结果！</p>
+            {% else %}
+                <ul>
+                    {% for article in pageData.object_list %}
+                        <li style="margin-bottom: 30px">
+                    <span class="date"><a
+                            href="{% url 'detail' id article.id %}">{{ article.create_time|date:'Y年m月d日' }}</a></span>
+                            <span class="title"><a
+                                    href="{% url 'detail' id article.id %}">{{ article.title }}</a></span>
+                            <span class="summary">{{ article.abstract }}...</span>
+                            <span class="img">
+                        {% if article.image %}
+                            <img src="{{ article.image.url }}">
+                        {% endif %}
+                    </span>
+                            </span>
+                            <span class="info">发表于 {{ article.create_time|date:'Y-m-d H:i' }} 阅读({{ article.reads }})  </span>
+                        </li>
+                        <hr style="height:5px;border:none;border-top:1px dashed gray;padding-bottom:  10px;">
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}

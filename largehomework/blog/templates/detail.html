@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="data_list">
+        <div class="data_list_title">
+            <img src="{% static 'images/blog_show_icon.png' %}"/>
+            博客信息
+        </div>
+        <div>
+            <div class="blog_title"><h3><strong>{{ article.title }}</strong></h3></div>
+
+            <div class="blog_info">
+                作者：{{ user.name }}&nbsp;&nbsp;发布时间：『 {{ article.create_time|date:'Y-m-d H:i' }}』&nbsp;&nbsp;阅读({{ article.reads }})
+            </div>
+            <div class="blog_content">
+                {{ article.content |safe }}
+            </div>
+        </div>
+    </div>
+    <div class="data_list">
+        <div class="data_list_title">
+            <img src="{% static 'images/comment_icon.png' %}"/>
+            评论信息
+        </div>
+        <div class="commentDatas">
+            {% if not commentList %}
+                暂无评论
+            {% else %}
+                {% for comment in commentList %}
+                    <div class="comment">
+                        <span><font>{{ forloop.counter }}楼&nbsp;&nbsp;&nbsp;&nbsp;{{ comment.user }}：</font>{{ comment.content }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;{{ comment.create_time|date:"Y-m-d H:i" }}&nbsp;]</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="data_list">
+        <div class="data_list_title">
+            <img src="{% static 'images/publish_comment_icon.png' %}"/>
+            发表评论
+        </div>
+        <div class="publish_comment">
+            <form action="" method="post" onsubmit="return checkForm()">
+                {% csrf_token %}
+                <div style="padding: 5px">
+                    用户：<input type="text" id="user" name="user" value="匿名用户">
+                </div>
+                <div>
+                <textarea style="width: 100%" rows="3" id="content" name="content"
+                          placeholder="来说两句吧..."></textarea>
+                </div>
+                <div class="publishButton">
+                    <button class="btn btn-primary" type="submit">发表评论</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        function checkForm() {
+            var user = $("#user").val();
+            var content = $("#content").val();
+            if (content == null || content == '') {
+                alert("请输入评论内容！");
+                return false;
+            } else if (user == null || user == '') {
+                alert("请填写用户！");
+                return false;
+            }
+            return true;
+        }
+    </script>
+{% endblock %}

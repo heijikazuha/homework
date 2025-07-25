@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}留言{% endblock %}
+{% load static %}
+{% block content %}
+    <div class="data_list">
+        {% for message in pageData.object_list %}
+            <div class="msg">
+                <ul style="background: url({% static "images/defaultuser.jpg" %}) no-repeat top 20px left 10px;">
+                    <p style="padding-top: 5px;"><span
+                            class="msgtime">{{ message.create_time|date:"Y-m-d" }}</span>{{ message.name }}：</p>
+                    <p class="msginfo">{{ message.content }}</p>
+                </ul>
+            </div>
+        {% endfor %}
+        <nav aria-label="...">
+            <ul class="pagination" style="justify-content: center;padding-top: 20px">
+                {% if pageData.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'message' id pageData.previous_page_number %}">上一页</a>
+                    </li>
+                {% endif %}
+                {% if pageData.object_list %}
+                    {% for page in pageData.paginator.page_range %}
+                        {% if pageData.number == page %}
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="{% url 'message' id page %}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="{% url 'message' id page %}">{{ page }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if pageData.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'message' id pageData.next_page_number %}">下一页</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <hr/>
+        <div class="gbox">
+            <form action="" method="post" onsubmit="return checkForm()">
+                {% csrf_token %}
+                <p><strong>说点什么吧...</strong></p>
+                <table cellspacing="15" cellpadding="5">
+                    <tr>
+                        <td>您的姓名:</td>
+                        <td><input name="name" type="text" id="name">*</td>
+                    </tr>
+                    <tr>
+                        <td>联系邮箱:</td>
+                        <td><input name="email" type="text" id="email">*</td>
+                    </tr>
+                    <tr>
+                        <td valign="top">留言内容：</td>
+                        <td>
+                            <textarea name="content" cols="60" rows="6" id="content"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="Submit3" value="提交">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        function checkForm() {
+            var name = $("#name").val();
+            var email = $("#email").val();
+            var content = $("#content").val();
+            if (content == null || content == '') {
+                alert("请输入留言内容！");
+                return false;
+            } else if (name == null || name == '') {
+                alert("请填写姓名！");
+                return false;
+            } else if (email == null || email == '') {
+                alert("请填写邮箱！");
+                return false;
+            }
+            return true;
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}关于我{% endblock %}
+{% load static %}
+{% block content %}
+    <div class="data_list">
+        <div>昵称：{{ user.name }}</div>
+        <div>简介：{{ user.introduce }}</div>
+        <hr>
+        <div>公司：{{ user.company }}</div>
+        <div>职位：{{ user.profession }}</div>
+        <hr>
+        <p>微信：{{ user.wx }}</p>
+        <p>QQ：{{ user.qq }}</p>
+        <p>微信：{{ user.wx }}</p>
+        <p>联系电话：{{ user.telephone }}</p>
+        <p>住址：{{ user.address }}</p>
+    </div>
+
+
+
+{% endblock %}
