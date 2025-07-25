@@ -3,7 +3,8 @@
 平台采用主流的Python技术栈实现，Mysql8数据库，Django5后端，Bootstrap前端UI框架，以及Django5自带的Admin系统作为后台管理。  
 功能包括：用户登录，注册，博客列表显示，博客详细页面，博客评论，博客类别，友情链接，我的相册，关于我，留言功能；全局上线文自定义；用户模型扩展；以及自带的Admin后台管理等。  
 说明：  
-所用Python3.12.7  
+1.所用Python3.12.7  
+2.smallhomework为小作业，largehomework为大作业，largehomework中包括论文，其中web和server文件夹为半成品。  
 运行步骤：  
 1.将db_blog.sql数据库文件导入MySQL Workbench 8.0中，创建数据库；  
 2.在PyCharm( 2025.1.3.1可行)中打开blog文件夹，根据requirements.txt安装相关软件包，然后运行largehomework中的blog这个Django文件。  
